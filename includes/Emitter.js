@@ -1,29 +1,108 @@
+//Emitters configurations
+/*************************************************************
+           x,y: emitter position
+         count: number of particles
+          size: size variation for particles
+          type: "radial"(default) or "linear"
+         vx,vy: diretional velocity
+      friction: velocity decrease ammount
+        stroke: stroke thickness
+        rotate: true(defaul) or false : to allow particles to keep floating
+  vrx,vry,vrz : Rotation velocity - default = 10
+        color : "random"(default) or color EG:"#ff0000"
+        style : "random"(default), "fill" or "stroke"
+    direction : [only for linear] degrees
+         depht: Z variable depth
+*************************************************************/
 //Emitter class
-function Emitter( particlesCount ){
-  this.type = "radial"; //type: linear or radial(default)
-  this.pX = this.pY = this.pZ = 0;//Init position
-  this.direction = 0;
-  this.stroke = 2;//Stroke size
-  this.vx = this.vy = 5.;  //Velocity x and y
-  this.friction = Math.random() * 0.05 + 0.90;  //Set friction
-  this.color = "random";
-  this.style = "random";
-  this.rotate = true;
-  this.vrx=this.vry=this.vrz = 10;
-  this.variation = 50.;
-  this.depht = 35;
-  this.count = particlesCount;
-  this.particles = [];//Create and hold particles
+function Emitter( data ){
+  // Emitter type
+  this.type = data.type ? data.type : "radial"; //type: linear or radial(default)
+  // Emitter position
+  this.pX = data.x ? data.x : 0;
+  this.pY = data.y ? data.y : 0;
+  this.pZ = data.z ? data.z : 0;
+  //Emitter direction
+  this.direction = data.direction ? data.direction : 0;
+  //Stroke size
+  this.stroke = data.stroke ? data.stroke : 2;
+  //Velocity x and y
+  this.vx = data.vx ? data.vx : 5;
+  this.vy = data.vy ? data.vy : 5;
+  //Friction
+  this.friction = Math.random() * 0.05 + data.friction ? data.friction : 0.90;
+  //Particle colors
+  this.color = data.color ? data.color : "random";
+  //Particles styles
+  this.style = data.style ? data.style : "random";
+  //Particles can rotate/float
+  this.rotate = data.rotate ? data.rotate : true;
+  //Particles rotation velocity
+  this.vrx = data.vrx ? data.vrx : 10;
+  this.vry = data.vry ? data.vry : 10;
+  this.vrz = data.vrz ? data.vrz : 10;
+  //Size variation
+  this.variation = data.size ? data.size : 50.;
+  //Z Depth
+  this.depht = data.depth ? data.depth : 35;
+  //Particle count
+  this.count = data.count ? data.count : 10;
+  //Particles container
+  this.particles = [];
 }
-//
+//Cast and hold all particles
+Emitter.prototype.cast = function(){
+  for(var i = 0; i < this.count; i++){
+    var triangle = new Triangle( this );
+    this.particles.push( triangle );
+  }
+}
+//Render particles
+Emitter.prototype.render = function(){
+  //Emitter - Create new object
+  push();
+    //Change emitter position
+    translate(this.pX,this.pY,this.pZ);
+    //Change emitter direction
+    rotateZ( toRadian( this.direction ) );
+
+    push();//Open particle container
+
+      if(debug){ //If debugable, show emitter plane
+        ambientMaterial("#00ff00");
+        plane(30);
+      }
+
+      //Render casted particles
+      for(var i in this.particles){
+        //Get current triangle
+        var trangle = this.particles[i];
+        trangle.react(); //Call mouse reaction
+        trangle.enter(); //Call entry function
+        push();
+          trangle.render(); //Render triangle
+        pop();
+      }
+    pop();//Close particle container
+
+  //Emitter - Close object
+  pop();
+}
+
+
+
+//Public setup methods
 Emitter.prototype.setType = function(type){
+
   if(!type){return;}
   this.type = type;
 }
 Emitter.prototype.setPosition = function(x,y,z){
+
    this.pX = x; this.pY = y; this.pZ = z;
 }
 Emitter.prototype.setDirection = function(degrees){
+
   if(!degrees){return;}
   this.direction = degrees;
 }
@@ -64,34 +143,5 @@ Emitter.prototype.setRotation = function(vx,vy,vz){
   if(vy){this.vrx = vy;}
   if(vz){this.vrx = vz;}
 }
-//Cast particles
-Emitter.prototype.cast = function(){
-  for(var i = 0; i < this.count; i++){
-    var triangle = new Triangle( this );
-    this.particles.push( triangle );
-  }
-}
-//Render particles
-Emitter.prototype.render = function(){
-  push();
 
-    translate(this.pX,this.pY,this.pZ);
-    rotateZ( toRadian( this.direction ) );
-    push();
-      if(debug){
-        ambientMaterial("#00ff00");
-        plane(30);
-      }
-      //Cast particles
-      for(var i in this.particles){
-     //Get current triangle
-        var t = this.particles[i];
-        t.react(); //Mouse reaction
-        t.enter();
-        push();
-          t.render(); //Print
-        pop();
-      }
-    pop();
-  pop();
-}
+

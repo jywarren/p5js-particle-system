@@ -1,19 +1,4 @@
-//Emitters configurations
-/*************************************************************
-           x,y: emitter position
-         count: number of particles
-          size: size variation for particles
-          type: "radial"(default) or "linear"
-         vx,vy: diretional velocity
-      friction: velocity decrease ammount
-        stroke: stroke thickness
-        rotate: true(defaul) or false : to allow particles to keep floating
-  vrx,vry,vrz : Rotation velocity - default = 10
-        color : "random"(default) or color EG:"#ff0000"
-        style : "random"(default), "fill" or "stroke"
-    direction : [only for linear] degrees
-         depht: Z variable depth
-*************************************************************/
+
 //Canvas properties
 var w = 1000;
 var h = 800;
@@ -28,7 +13,7 @@ var emittersSetup =
 [
   { x:-420,
     y:-280,
-    count:50,
+    count:10,
     size:35,
     vx:30,
     vy:5,
@@ -103,34 +88,33 @@ function toRadian(degrees){
 function castEmitters(){
   for(var i in emittersSetup){
     //Create new emitter
-    var emitter = new Emitter( emittersSetup[i].count );
+    var emitter = new Emitter( emittersSetup[i] );
     emitters.push( emitter ); //Push in to the collection
 
-    //Set emitter type
-    emitter.setType(emittersSetup[i].type);
-    //Set emitter position
-    emitter.setPosition(emittersSetup[i].x,emittersSetup[i].y,0);
-    //set stroke size
-    emitter.setStroke(emittersSetup[i].stroke);
-    //Set it's velocity
-    emitter.setVelocity(emittersSetup[i].vx,emittersSetup[i].vy);
-    //Set emitter friction
-    emitter.setFriction(emittersSetup[i].friction);
-    //Set size variation
-    emitter.setSize(emittersSetup[i].size);
-    //Set color
-    emitter.setColor(emittersSetup[i].color);
-    //Set style
-    emitter.setStyle(emittersSetup[i].style);
-    //Set rotation permition
-    emitter.setRotate(emittersSetup[i].rotate);
-    //Set direction permition
-    emitter.setDirection(emittersSetup[i].direction);
-    //Set rotation permition
-    emitter.setRotation(emittersSetup[i].vrx,emittersSetup[i].vry,emittersSetup[i].vrz);
-    //
-    //Set direction permition
-    emitter.setDepth(emittersSetup[i].depth);
+    // //Set emitter type
+    // emitter.setType(emittersSetup[i].type);
+    // //Set emitter position
+    // emitter.setPosition(emittersSetup[i].x,emittersSetup[i].y,0);
+    // //set stroke size
+    // emitter.setStroke(emittersSetup[i].stroke);
+    // //Set it's velocity
+    // emitter.setVelocity(emittersSetup[i].vx,emittersSetup[i].vy);
+    // //Set emitter friction
+    // emitter.setFriction(emittersSetup[i].friction);
+    // //Set size variation
+    // emitter.setSize(emittersSetup[i].size);
+    // //Set color
+    // emitter.setColor(emittersSetup[i].color);
+    // //Set style
+    // emitter.setStyle(emittersSetup[i].style);
+    // //Set rotation permition
+    // emitter.setRotate(emittersSetup[i].rotate);
+    // //Set direction permition
+    // emitter.setDirection(emittersSetup[i].direction);
+    // //Set rotation permition
+    // emitter.setRotation(emittersSetup[i].vrx,emittersSetup[i].vry,emittersSetup[i].vrz);
+    // //Set direction permition
+    // emitter.setDepth(emittersSetup[i].depth);
     //Cast triangles
     emitter.cast();
   }
