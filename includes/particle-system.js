@@ -11,23 +11,35 @@
   vrx,vry,vrz : Rotation velocity - default = 10
         color : "random"(default) or color EG:"#ff0000"
         style : "random"(default), "fill" or "stroke"
-        direction : [only for linear] degrees
+    direction : [only for linear] degrees
+         depht: Z variable depth
 *************************************************************/
-var v = 10;
-var emittersSetup = [
-  {x:-420, y:-280, count:50, size:35,vx:30,vy:5, type:"linear",direction:-25, vrx:v,vry:v,vrz:v},
-];
-
-
+//Canvas properties
 var w = 1000;
 var h = 800;
+//If mouse should repel particles
 var repel = true;
+var mouseRadius = 60; //Repeling radius
+//Mouse init position
+var mouse = {x:0,y:0}
+//Temporary rotation velocity
+var v = 10;
+var emittersSetup =
+[
+  { x:-420,
+    y:-280,
+    count:50,
+    size:35,
+    vx:30,
+    vy:5,
+    type:"linear",
+    direction:-25,
+    vrx:v,vry:v,vrz:v,
+    depht:35},
+];
 
 //Hold created emitters
 var emitters = [];
-var mouse = {x:0,y:0}
-var depht = 35;
-var mouseRadius = 1;
 
 //*****************************
 // Canvas
@@ -114,9 +126,11 @@ function castEmitters(){
     emitter.setRotate(emittersSetup[i].rotate);
     //Set direction permition
     emitter.setDirection(emittersSetup[i].direction);
-     //Set rotation permition
+    //Set rotation permition
     emitter.setRotation(emittersSetup[i].vrx,emittersSetup[i].vry,emittersSetup[i].vrz);
-
+    //
+    //Set direction permition
+    emitter.setDepth(emittersSetup[i].depth);
     //Cast triangles
     emitter.cast();
   }

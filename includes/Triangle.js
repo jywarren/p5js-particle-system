@@ -60,11 +60,11 @@ function Triangle( emitter ){
 
   //Initial position - dynamic
   this.pX = this.pY = 0;
-  this.pZ = randWithNegative(depht);
+  this.pZ = randWithNegative(this.emitter.depht);
 
   //Hold position - triangle will keep trying to go back to this position
   this.dest = { x : this.pX, y: this.pY };
-    this.vx = this.vy = 0;
+  this.vx = this.vy = 0;
 
   this.accX = this.accY = 0;
 
@@ -178,7 +178,7 @@ Triangle.prototype.react = function(){//return;
         var a = this.pX - mX;
         var b = this.pY - mY;
     var distance = Math.sqrt( a*a + b*b );
-        if( distance < (mouseRadius * 70 ) ){
+        if( distance < (mouseRadius) ){
       this.accX = (this.pX - mX)/100;
             this.accY = (this.pY - mY)/100;
       this.vx += this.accX;

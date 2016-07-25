@@ -11,6 +11,7 @@ function Emitter( particlesCount ){
   this.rotate = true;
   this.vrx=this.vry=this.vrz = 10;
   this.variation = 50.;
+  this.depht = 35;
   this.count = particlesCount;
   this.particles = [];//Create and hold particles
 }
@@ -41,6 +42,10 @@ Emitter.prototype.setFriction = function(friction){
 Emitter.prototype.setSize = function(size){
   if(!size){return;}
   this.variation = size;
+}
+Emitter.prototype.setDepht = function(depht){
+  if(!depht){return;}
+  this.depht = depht;
 }
 Emitter.prototype.setColor = function(color){
   if(!color){return;}
