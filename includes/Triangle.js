@@ -26,7 +26,7 @@ function Triangle( emitter ){
   this.cX = rand(ratio) - this.aX
   this.cY = rand(ratio) - this.aY;
   this.aX = this.aY = 0;
-
+  //Move to center
   var center = {x:(this.aX + this.bX + this.cX)/3, y:(this.aY + this.bY + this.cY)/3 };
   this.aX -= center.x;
   this.aY -= center.y;
@@ -34,16 +34,18 @@ function Triangle( emitter ){
   this.bY -= center.y;
   this.cX -= center.x;
   this.cY -= center.y;
-
   //Sides sizes
-  this.aW = distance(this.aX, this.aY,this.bX, this.bY);
-  this.bW = distance(this.bX, this.bY,this.cX, this.cY);
-  this.cW = distance(this.aX, this.aY,this.cX, this.cY);
+  this.aW = distance(this.aX,this.aY,this.bX,this.bY);
+  this.bW = distance(this.bX,this.bY,this.cX,this.cY);
+  this.cW = distance(this.aX,this.aY,this.cX,this.cY);
+  //Midd points
+  this.mA  = middlePoint(this.aX,this.aY,this.bX,this.bY);
+  this.mB  = middlePoint(this.bX,this.bY,this.cX,this.cY);
+  this.mC  = middlePoint(this.aX,this.aY,this.cX,this.cY);
   //Angles, in radians
-  this.aR = getAngle(this.aX, this.aY,this.bX, this.bY);
-  this.bR = getAngle(this.bX, this.bY,this.cX, this.cY);
-  this.cR = getAngle(this.aX, this.aY,this.cX, this.cY);
-
+  this.aR = getAngle(this.aX,this.aY,this.bX,this.bY);
+  this.bR = getAngle(this.bX,this.bY,this.cX,this.cY);
+  this.cR = getAngle(this.aX,this.aY,this.cX,this.cY);
   //Entry velocity, acording to emitter type
   this.evx = emitter.type == "linear" ? rand(emitter.vx) : randWithNegative(emitter.vx);
   this.evy = emitter.type == "linear" ? rand(emitter.vy) : randWithNegative(emitter.vy);
@@ -132,10 +134,6 @@ function debugPoints(t){return;
 function outlineTriangle(t){
   push();
     t.float();
-    var mA  = middlePoint(t.aX,t.aY,t.bX,t.bY);
-    var mB  = middlePoint(t.bX,t.bY,t.cX,t.cY);
-    var mC  = middlePoint(t.aX,t.aY,t.cX,t.cY);
-
     //Add debugging points
     debugPoints(t);
 
@@ -146,19 +144,19 @@ function outlineTriangle(t){
       ambientMaterial(t.color);
       //Bottom - A -> B
       push();
-          translate(mA.x,mA.y, 0);
+          translate(t.mA.x,t.mA.y, 0);
           rotateZ( t.aR );
           plane(t.aW,strokeW);
       pop();
       //Right - B -> C
       push();
-          translate(mB.x,mB.y, 0);
+          translate(t.mB.x,t.mB.y, 0);
           rotateZ( t.bR );
           plane(t.bW,strokeW);
       pop();
       //Left - A -> C
       push();
-          translate(mC.x,mC.y, 0);
+          translate(t.mC.x,t.mC.y, 0);
           rotateZ( t.cR );
           plane(t.cW,strokeW);
       pop();
@@ -173,9 +171,6 @@ function fullTriangle(t){
     debugPoints(t);
     push();
       ambientMaterial(t.color);
-      // rotateY( toRadian( mouse.x ) );
-      // rotateX( toRadian( mouse.y ) );
-      // rotateZ( toRadian( mouse.x ) );
       triangle(t.aX, t.aY, t.bX, t.bY, t.cX, t.cY);
     pop();
   pop();
@@ -209,7 +204,6 @@ Triangle.prototype.enter = function(){
     this.canReact = true;
   }
 }
-
 //Float around it's center
 Triangle.prototype.float = function(){
   if(this.emitter.rotate==false){ return; }
@@ -223,9 +217,6 @@ Triangle.prototype.float = function(){
   rotateY( toRadian( this.ry ) % 360  );
   rotateZ( toRadian( this.rz ) % 360  );
 }
-
-
-
 //React to mouse position
 Triangle.prototype.react = function(){
     if(!this.canReact){return;} //Check if can react
@@ -242,7 +233,6 @@ Triangle.prototype.react = function(){
     //Change position
     this.pX += this.vx;
     this.pY += this.vy;
-
 
     //MOUSE REPELENT
     //Compensate emitter position to be affected in the word
@@ -267,16 +257,10 @@ Triangle.prototype.react = function(){
 
     }else{
       var fric = 0.90;
-      this.vrx *= fric;//this.emitter.friction;
-      this.vry *= fric;//this.emitter.friction;
-      this.vrz *= fric;//this.emitter.friction;
-
-      var varratio = 100;
-      this.vrx = this.vrx <= this.vr.x ? this.vr.x : this.vrx;// - (this.emitter.vrr / varratio);
-      this.vry = this.vry <= this.vr.y ? this.vr.y : this.vry;// - (this.emitter.vrr / varratio);
-      this.vrz = this.vrz <= this.vr.z ? this.vr.z : this.vrz;// - (this.emitter.vrr / varratio);
+      this.vrx = this.vrx <= this.vr.x ? this.vr.x : this.vrx *= fric;
+      this.vry = this.vry <= this.vr.y ? this.vr.y : this.vry *= fric;
+      this.vrz = this.vrz <= this.vr.z ? this.vr.z : this.vrz *= fric;
     }
-
 }
 
 

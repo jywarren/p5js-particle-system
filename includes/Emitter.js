@@ -38,26 +38,22 @@ function Emitter( data ){
   this.style = data.style ? data.style : "random";
   //Particles can rotate/float
   this.rotate = data.rotate != null ? data.rotate : true;
-
   //Particles rotation velocity
   var defaultRV = 25;
   this.vrx = data.vrx ? data.vrx : defaultRV;
   this.vry = data.vry ? data.vry : defaultRV;
   this.vrz = data.vrz ? data.vrz : defaultRV;
   this.vrr = rand(70) + 50;
-
+  //Delay before enter
+  this.delay = data.delay ? data.delay : 0;
   //Size variation
   this.variation = data.size ? data.size : 50.;
-  //Z Depth
+  //Z Depth variation
   this.depht = data.depth ? data.depth : 35;
   //Particle count
   this.count = data.count ? data.count : 10;
   //Particles container
   this.particles = [];
-
-  // this.framecount = 0;
-
-  this.delay = data.delay ? data.delay : 0;
 }
 //Cast and hold all particles
 Emitter.prototype.cast = function(){

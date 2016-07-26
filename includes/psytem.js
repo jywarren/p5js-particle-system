@@ -79,26 +79,22 @@ function Emitter( data ){
   this.style = data.style ? data.style : "random";
   //Particles can rotate/float
   this.rotate = data.rotate != null ? data.rotate : true;
-
   //Particles rotation velocity
   var defaultRV = 25;
   this.vrx = data.vrx ? data.vrx : defaultRV;
   this.vry = data.vry ? data.vry : defaultRV;
   this.vrz = data.vrz ? data.vrz : defaultRV;
   this.vrr = rand(70) + 50;
-
+  //Delay before enter
+  this.delay = data.delay ? data.delay : 0;
   //Size variation
   this.variation = data.size ? data.size : 50.;
-  //Z Depth
+  //Z Depth variation
   this.depht = data.depth ? data.depth : 35;
   //Particle count
   this.count = data.count ? data.count : 10;
   //Particles container
   this.particles = [];
-
-  this.framecount = 0;
-
-  this.delay = data.delay ? data.delay : 0;
 }
 //Cast and hold all particles
 Emitter.prototype.cast = function(){
@@ -214,7 +210,6 @@ Emitter.prototype.setDelay = function(delay){
 // Triangle
 //*****************************
 function Triangle( emitter ){
-
   //Hold the emitter data for furder calculations
   this.emitter = emitter;
   //Se color and shape type
@@ -234,7 +229,7 @@ function Triangle( emitter ){
   this.cX = rand(ratio) - this.aX
   this.cY = rand(ratio) - this.aY;
   this.aX = this.aY = 0;
-
+  //Move to center
   var center = {x:(this.aX + this.bX + this.cX)/3, y:(this.aY + this.bY + this.cY)/3 };
   this.aX -= center.x;
   this.aY -= center.y;
@@ -242,16 +237,18 @@ function Triangle( emitter ){
   this.bY -= center.y;
   this.cX -= center.x;
   this.cY -= center.y;
-
   //Sides sizes
-  this.aW = distance(this.aX, this.aY,this.bX, this.bY);
-  this.bW = distance(this.bX, this.bY,this.cX, this.cY);
-  this.cW = distance(this.aX, this.aY,this.cX, this.cY);
+  this.aW = distance(this.aX,this.aY,this.bX,this.bY);
+  this.bW = distance(this.bX,this.bY,this.cX,this.cY);
+  this.cW = distance(this.aX,this.aY,this.cX,this.cY);
+  //Midd points
+  this.mA  = middlePoint(this.aX,this.aY,this.bX,this.bY);
+  this.mB  = middlePoint(this.bX,this.bY,this.cX,this.cY);
+  this.mC  = middlePoint(this.aX,this.aY,this.cX,this.cY);
   //Angles, in radians
-  this.aR = getAngle(this.aX, this.aY,this.bX, this.bY);
-  this.bR = getAngle(this.bX, this.bY,this.cX, this.cY);
-  this.cR = getAngle(this.aX, this.aY,this.cX, this.cY);
-
+  this.aR = getAngle(this.aX,this.aY,this.bX,this.bY);
+  this.bR = getAngle(this.bX,this.bY,this.cX,this.cY);
+  this.cR = getAngle(this.aX,this.aY,this.cX,this.cY);
   //Entry velocity, acording to emitter type
   this.evx = emitter.type == "linear" ? rand(emitter.vx) : randWithNegative(emitter.vx);
   this.evy = emitter.type == "linear" ? rand(emitter.vy) : randWithNegative(emitter.vy);
@@ -340,10 +337,6 @@ function debugPoints(t){return;
 function outlineTriangle(t){
   push();
     t.float();
-    var mA  = middlePoint(t.aX,t.aY,t.bX,t.bY);
-    var mB  = middlePoint(t.bX,t.bY,t.cX,t.cY);
-    var mC  = middlePoint(t.aX,t.aY,t.cX,t.cY);
-
     //Add debugging points
     debugPoints(t);
 
@@ -354,19 +347,19 @@ function outlineTriangle(t){
       ambientMaterial(t.color);
       //Bottom - A -> B
       push();
-          translate(mA.x,mA.y, 0);
+          translate(t.mA.x,t.mA.y, 0);
           rotateZ( t.aR );
           plane(t.aW,strokeW);
       pop();
       //Right - B -> C
       push();
-          translate(mB.x,mB.y, 0);
+          translate(t.mB.x,t.mB.y, 0);
           rotateZ( t.bR );
           plane(t.bW,strokeW);
       pop();
       //Left - A -> C
       push();
-          translate(mC.x,mC.y, 0);
+          translate(t.mC.x,t.mC.y, 0);
           rotateZ( t.cR );
           plane(t.cW,strokeW);
       pop();
