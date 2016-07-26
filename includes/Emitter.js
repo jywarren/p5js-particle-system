@@ -36,11 +36,13 @@ function Emitter( data ){
   //Particles styles
   this.style = data.style ? data.style : "random";
   //Particles can rotate/float
-  this.rotate = data.rotate ? data.rotate : true;
+  this.rotate = data.rotate != null ? data.rotate : true;
   //Particles rotation velocity
   this.vrx = data.vrx ? data.vrx : 10;
   this.vry = data.vry ? data.vry : 10;
   this.vrz = data.vrz ? data.vrz : 10;
+  this.vrr = rand(70) + 50;
+
   //Size variation
   this.variation = data.size ? data.size : 50.;
   //Z Depth
@@ -49,6 +51,8 @@ function Emitter( data ){
   this.count = data.count ? data.count : 10;
   //Particles container
   this.particles = [];
+
+  this.framecount = 0;
 }
 //Cast and hold all particles
 Emitter.prototype.cast = function(){
@@ -83,15 +87,16 @@ Emitter.prototype.render = function(){
           trangle.render(); //Render triangle
         pop();
       }
+
     pop();//Close particle container
 
   //Emitter - Close object
   pop();
 }
 
-
-
-//Public setup methods
+//***************************************************
+//Public setup functions
+//***************************************************
 Emitter.prototype.setType = function(type){
 
   if(!type){return;}
