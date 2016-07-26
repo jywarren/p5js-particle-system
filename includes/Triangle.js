@@ -1,13 +1,12 @@
-// Triangle
-//*****************************
-function Triangle( emitter ){
-  /*
-      C = cX,cY
+/*    C = cX,cY
      /\
   cW/  \bW
   A/____\B = bX,bY
-     aW
-  */
+     aW*/
+// Triangle
+//*****************************
+function Triangle( emitter ){
+
   //Hold the emitter data for furder calculations
   this.emitter = emitter;
   //Se color and shape type
@@ -20,12 +19,12 @@ function Triangle( emitter ){
 
   //Points
   var ratio = emitter.variation;
-  this.aX = rand(ratio);//20;
-  this.aY = rand(ratio);//20;//rand(ratio);
-  this.bX = rand(ratio) - this.aX;//100;//rand(ratio) - this.aX;
-  this.bY = rand(ratio) - this.aY;//100;//rand(ratio) - this.aY;
-  this.cX = rand(ratio) - this.aX//10;//rand(ratio) - this.aX;
-  this.cY = rand(ratio) - this.aY;//150;//rand(ratio) - this.aY;
+  this.aX = rand(ratio);
+  this.aY = rand(ratio);
+  this.bX = rand(ratio) - this.aX;
+  this.bY = rand(ratio) - this.aY;
+  this.cX = rand(ratio) - this.aX
+  this.cY = rand(ratio) - this.aY;
   this.aX = this.aY = 0;
 
   var center = {x:(this.aX + this.bX + this.cX)/3, y:(this.aY + this.bY + this.cY)/3 };
@@ -129,7 +128,6 @@ function debugPoints(t){return;
     //Finish points
   // }
 }
-
 //** Outline triangle
 function outlineTriangle(t){
   push();
@@ -184,7 +182,6 @@ function fullTriangle(t){
 }
 //Render triangle
 Triangle.prototype.render = function(){
-  if(!this.canRender){return;} //If can not render, stop.
     translate(this.pX,this.pY,this.pZ);
     push();
        switch(this.shape){
@@ -196,12 +193,11 @@ Triangle.prototype.render = function(){
            break;
        }
     pop();
-
 }
 //Animate entrance
 Triangle.prototype.enter = function(){
+  if( (this.emitter.delay * fps) > frameCount ){ return; }
   if(this.canReact){ return; }
-  this.canRender = true;
 
   this.eavx *= this.emitter.friction;
   this.eavy *= this.emitter.friction;
@@ -214,17 +210,11 @@ Triangle.prototype.enter = function(){
   }
 }
 
-
-// var tprx =
-// var tpry =
-// var tprz = 0;
-
 //Float around it's center
-Triangle.prototype.float = function(){ if(!tempRotation){return;}
+Triangle.prototype.float = function(){
   if(this.emitter.rotate==false){ return; }
 
   var ratio = 10;
-
   this.rx += (this.vrx/ratio);
   this.ry += (this.vry/ratio);
   this.rz += (this.vrz/ratio);
@@ -232,17 +222,13 @@ Triangle.prototype.float = function(){ if(!tempRotation){return;}
   rotateX( toRadian( this.rx ) % 360  );
   rotateY( toRadian( this.ry ) % 360  );
   rotateZ( toRadian( this.rz ) % 360  );
-
-  // rotateX( toRadian( (frameCount * (this.vrx/ratio) ) % 360 ) ); //console.log(this.vrx);
-  // rotateY( toRadian( (frameCount * (this.vry/ratio) ) % 360 ) );
-  // rotateZ( toRadian( (frameCount * (this.vrz/ratio) ) % 360 ) );
 }
 
 
 
 //React to mouse position
 Triangle.prototype.react = function(){
-    if(!this.canReact || !repel){return;} //Check if can react
+    if(!this.canReact){return;} //Check if can react
 
     //Get acceleration
     this.accX = (this.dest.x - this.pX) / 100;
@@ -291,89 +277,7 @@ Triangle.prototype.react = function(){
       this.vrz = this.vrz <= this.vr.z ? this.vr.z : this.vrz;// - (this.emitter.vrr / varratio);
     }
 
-    // var mx = mX - this.aX;
-    // var my = mY - this.aY;
-
-    // var mb = (this.bX-this.aX) * my - (this.bY - this.aY) * my > 0;
-    // if( (this.cX - this.aX) * my - (this.cY-this.aY) * my > 0 == mb ){
-    //   // teste = "false 1";
-
-    //   // console.log("false 1");
-    // }if( (this.cX - this.bX)*(mY-this.bY)-(this.cY - this.bY)*(mX-this.bX) > 0 != mb ){
-    //   // console.log("false 2");
-    // }else{
-    //   // console.log("true");
-    // }
-
-
-  // console.log(
-  //   mouse,
-  //   {EMx:this.emitter.pX,EMy:this.emitter.pY}
-
-  //   );
-
-//if(teste=="false"){
-  //teste = true;
-// return;
-// var pA = {x:this.aX+this.pX, y:this.aY+this.pY};
-// var pB = {x:this.bX+this.pX, y:this.bY+this.pY};
-// var pC = {x:this.cX+this.pX, y:this.cY+this.pY};
-
-// push();
-// push();
-//   quad(pA.x,pA.y,pB.x,pB.y,pC.x,pC.y);
-// pop();
-// pop();
-
-// push();
-//     push();
-//       translate(pA.x,pA.y,0);
-//       plane(10);
-//     pop();
-//     push();
-//       translate(pB.x,pB.y,0);
-//       plane(10);
-//     pop();
-//     push();
-//       translate(pC.x,pC.y,0);
-//       plane(10);
-//     pop();
-// pop();
-
-
-//}
-
-
-//   if(
-//     PointInTriangle(
-//     {x:mX,y:mY},
-// {x:this.bX,y:this.bY},
-//     {x:this.aX,y:this.aY},
-
-//     {x:this.cX,y:this.cY}
-//     )
-//   ){
-//     console.log("inside");
-//   }
-
 }
-
-// function sign (p1, p2, p3){
-
-//     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-// }
-// function PointInTriangle (pt, v1, v2, v3){
-//     var b1, b2, b3;
-
-//     b1 = sign(pt, v1, v2) < 0;
-//     b2 = sign(pt, v2, v3) < 0;
-//     b3 = sign(pt, v3, v1) < 0;
-
-//     return ((b1 == b2) && (b2 == b3));
-// }
-
-
-
 
 
 // Style

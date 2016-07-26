@@ -1,64 +1,49 @@
 
-//Canvas properties
-var w = 2000;
-var h = 1000;
-var tempRotation = false;
-//If mouse should repel particles
-var repel = false;
-var mouseRadius = 90; //Repeling radius
-//Mouse init position
-var mouse = {x:0,y:0}
-
-var v = 20;
-//Temporary rotation velocity
-var emittersSetup =
-[
-  // { x:-10, y:0, count:1, size:300, vx:20, vy:20, style:"stroke", depht:1, rotate:true},
-
-// { x:10, y:0, count:1, size:300, vx:20, vy:20, depht:1, rotate:true},
-// {x:-420, y:-280, count:1, size:100,vx:30,vy:5, type:"linear",direction:-25, vrx:v,vry:v,vrz:v,depht:1000},
-
-{x:-420, y:-280, count:40, size:35,vx:30,vy:5, type:"linear",direction:-25, vrx:v,vry:v,vrz:v,depht:1000},
-// {x:-120, y:-310, count:30, size:20,vx:16,vy:1, type:"linear", vrx:v,vry:v,vrz:v},
-// {x:220, y:-200, count:40, size:30,vx:16,vy:1, type:"linear", vrx:v,vry:v,vrz:v,direction:-16},
-// {x:420, y:100, count:30, size:40,vx:16,vy:10, type:"linear", vrx:v,vry:v,vrz:v,direction:-5},
-
+//*****************************
+// Emitters
+//*****************************
+var emittersSetup =[
+{x:-420, y:-280, count:40, size:35, vx:30, vy:5, type:"linear", direction:-25, delay:1},
+{x:-120, y:-310, count:30, size:20,vx:16,vy:1, type:"linear"},
+// {x:220, y:-200, count:40, size:30,vx:16,vy:1, type:"linear",direction:-16},
+// {x:420, y:100, count:30, size:40,vx:16,vy:10, type:"linear",direction:-5},
 ];
+
+
 //Hold created emitters
 var emitters = [];
 
 //*****************************
+// Mouse
+//*****************************
+var mouse = {x:0,y:0}
+var mouseRadius = 90; //Repeling radius
+
+//*****************************
 // Canvas
 //*****************************
+var fps     = 60;//Framerate
+var aspect  = 1.6;  //Aspect ratio based on 1280/800
+var cnvasW  = 1280; //Canvas width
+var cnvasH  = cnvasW / aspect;
 function setup(){
   //Current aspect ratio
-
-
-  mouse = {x:w,y:h}
-  var stage = createCanvas(w, h, WEBGL).parent("canvasHolder");
-  perspective(60 / 180 * PI, 1.6, 0.1, 1000);
-
-  // ortho(-width, width, height, -height/2, 0.1, 100);
-
-
-
-  pixelDensity(3.0);
+  var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
+  perspective(60 / 180 * PI, aspect, 0.1, 1000);
+  //
+  pixelDensity(1.5);
   //Frames per second
-  frameRate(60);
+  frameRate(fps);
   //Create emiters
   castEmitters();
 }
-function draw(){ background(120);
+function draw(){
   ambientLight(255); //Max light to keep materials with original color
   //Render emitters
   renderEmitters();
   //Render helpers
   debugHelpers();
-
-
-
 }
-
 
 
 //*****************************
@@ -70,8 +55,8 @@ function castEmitters(){
     //Create new emitter. Pass
     var emitter = new Emitter( emittersSetup[i] );
     emitters.push( emitter ); //Push in to the collection
-
-    emitter.cast(); //Cast triangles
+    //Cast triangles
+    emitter.cast();
   }
 }
 //Draw emitters and particles
@@ -80,7 +65,6 @@ function renderEmitters(){ //This can be cast at different times
     emitters[i].render();
   }
 }
-
 
 //*****************************
 // helpers
@@ -133,8 +117,10 @@ function onTouchMove(e){
     }
 }
 function onMouseMove(e){
-        mouse.x = e.clientX - (w/2);
-        mouse.y = e.clientY - (h/2);
+  mouse.x = e.clientX - (cnvasW/2);
+  mouse.y = e.clientY - (cnvasH/2);
+  // mouse.x = e.clientX - $("#canvasHolder").offset().left - (w/2);
+  // mouse.y = e.clientY - $("#canvasHolder").offset().top - (h/2);
 }
 function onMouseClick(e){
   repel = repel ? false : true;

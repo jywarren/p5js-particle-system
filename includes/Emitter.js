@@ -13,6 +13,7 @@
         style : "random"(default), "fill" or "stroke"
     direction : [only for linear] degrees
          depht: Z variable depth
+         delay: seconds before render
 *************************************************************/
 //Emitter class
 function Emitter( data ){
@@ -53,6 +54,8 @@ function Emitter( data ){
   this.particles = [];
 
   this.framecount = 0;
+
+  this.delay = data.delay ? data.delay : 0;
 }
 //Cast and hold all particles
 Emitter.prototype.cast = function(){
@@ -60,9 +63,17 @@ Emitter.prototype.cast = function(){
     var triangle = new Triangle( this );
     this.particles.push( triangle );
   }
+
+  // if(this.delay > 0){ console.log("Done");
+  //   this.setTimeout( function(){ this.setCanRender(true);console.log("Done"); }, this.delay);
+  // }else{
+  //   this.setCanRender(true);
+  // }
 }
 //Render particles
 Emitter.prototype.render = function(){
+
+
   //Emitter - Create new object
   push();
     //Change emitter position
@@ -148,5 +159,7 @@ Emitter.prototype.setRotation = function(vx,vy,vz){
   if(vy){this.vrx = vy;}
   if(vz){this.vrx = vz;}
 }
-
-
+Emitter.prototype.setDelay = function(delay){
+  if(delay == null){return;}
+  this.delay = delay;
+}

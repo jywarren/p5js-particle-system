@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 
 function debugHelpers(){
   if(!debug){return;}
