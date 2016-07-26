@@ -1,17 +1,17 @@
-//Hold created emitters
+//*****************************
+// Emitters
+//*****************************
 var emitters = [];
-
 //*****************************
 // Mouse
 //*****************************
 var mouse = {x:0,y:0}
-var mouseRadius = 90; //Repeling radius
-
+var mouseRadius = 90; //Repelling radius
 //*****************************
 // Canvas
 //*****************************
 var debug   = true;
-var fps     = 60;   //Framerate
+var fps     = 60;//Framerate
 var aspect  = 1.6;  //Aspect ratio based on 1280/800
 var cnvasW  = 1280; //Canvas width
 var cnvasH  = cnvasW / aspect;
@@ -33,8 +33,8 @@ function draw(){
   //Render helpers
   debugHelpers();
 }
-
-//Create all emitters
+//*****************************
+// Emitters
 function castEmitters(){
   for(var i in emittersSetup){
     //Create new emitter. Pass
@@ -45,121 +45,20 @@ function castEmitters(){
   }
 }
 //Draw emitters and particles
-function renderEmitters(){ //This can be cast at different times
+function renderEmitters(){
   for(var i in emitters){
     emitters[i].render();
   }
 }
 
+
 //*****************************
-// helpers
-//*****************************
-//Return a number btween 1 and sides
-function dice(sides){
 
-  return Math.floor( Math.random() * sides ) + 1;
-}
-//Return random value
-function rand(value,value2){
-  if(value2){
-    return (Math.random() * value2) + value;
-  }
-  return Math.random() * value;
-}
-function randWithNegative(value){
 
-  return (Math.random() * ((value*2)+1) ) - value;
-}
-//Calculate the distance btween two points
-function distance(x1, y1, x2, y2){
-
-  return Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
-}
-//Return the mddlepoint
-function middlePoint( x1, y1, x2, y2 ){
-
-  return { "x": (x1 +x2)/2 , "y": (y1+y2)/2 };
-}
-//Return the angle btween two points
-function getAngle(x1, y1, x2, y2){
-
-  return - Math.atan2(y1 - y2, x1 - x2);
-}
-//Deegree to radians
-function toRadian(degrees){
-
-  return degrees * Math.PI / 180;
-}
+// Emitters
 
 
 //*****************************
-// Listeners
-//*****************************
-function onTouchMove(e){
-    if(e.touches.length > 0 ){
-      mouse.x = e.touches[0].clientX;
-      mouse.y = e.touches[0].clientY;
-    }
-}
-function onMouseMove(e){
-  mouse.x = e.clientX - (cnvasW/2);
-  mouse.y = e.clientY - (cnvasH/2);
-  // mouse.x = e.clientX - $("#canvasHolder").offset().left - (w/2);
-  // mouse.y = e.clientY - $("#canvasHolder").offset().top - (h/2);
-}
-function onMouseClick(e){
-  repel = repel ? false : true;
-  tempRotation = tempRotation ? false : true;
-}
-window.addEventListener("mousemove", onMouseMove);
-window.addEventListener("touchmove", onTouchMove);
-window.addEventListener("click", onMouseClick);
-
-
-
-
-
-
-
-
-
-//*****************************
-// DEBUG
-//*****************************
-function debugHelpers(){
-  if(!debug){return;}
-
-  push();
-  translate(mouse.x, mouse.y,0);
-  ambientMaterial("#ff0000");
-  sphere(mouseRadius);
-  pop();
-
-  push();
-    ambientMaterial("#ff0000");
-    sphere(5);
-  pop();
-}
-
-
-//Emitters configurations
-/*************************************************************
-           x,y: emitter position
-         count: number of particles
-          size: size variation for particles
-          type: "radial"(default) or "linear"
-         vx,vy: diretional velocity
-      friction: velocity decrease ammount
-        stroke: stroke thickness
-        rotate: true(defaul) or false : to allow particles to keep floating
-  vrx,vry,vrz : Rotation velocity - default = 10
-        color : "random"(default) or color EG:"#ff0000"
-        style : "random"(default), "fill" or "stroke"
-    direction : [only for linear] degrees
-         depht: Z variable depth
-         delay: seconds before render
-*************************************************************/
-//Emitter class
 function Emitter( data ){
   // Emitter type
   this.type = data.type ? data.type : "radial"; //type: linear or radial(default)
@@ -207,16 +106,10 @@ Emitter.prototype.cast = function(){
     var triangle = new Triangle( this );
     this.particles.push( triangle );
   }
-
-  // if(this.delay > 0){ console.log("Done");
-  //   this.setTimeout( function(){ this.setCanRender(true);console.log("Done"); }, this.delay);
-  // }else{
-  //   this.setCanRender(true);
-  // }
 }
 //Render particles
 Emitter.prototype.render = function(){
-  if( (this.delay * fps) > frameCount ){ return; }
+
 
   //Emitter - Create new object
   push();
@@ -307,6 +200,9 @@ Emitter.prototype.setDelay = function(delay){
   if(delay == null){return;}
   this.delay = delay;
 }
+
+
+
 
 
 
@@ -494,7 +390,6 @@ function fullTriangle(t){
 }
 //Render triangle
 Triangle.prototype.render = function(){
-  if(!this.canRender){return;} //If can not render, stop.
     translate(this.pX,this.pY,this.pZ);
     push();
        switch(this.shape){
@@ -509,8 +404,8 @@ Triangle.prototype.render = function(){
 }
 //Animate entrance
 Triangle.prototype.enter = function(){
+  if( (this.emitter.delay * fps) > frameCount ){ return; }
   if(this.canReact){ return; }
-  this.canRender = true;
 
   this.eavx *= this.emitter.friction;
   this.eavy *= this.emitter.friction;
@@ -522,7 +417,6 @@ Triangle.prototype.enter = function(){
     this.canReact = true;
   }
 }
-
 //Float around it's center
 Triangle.prototype.float = function(){
   if(this.emitter.rotate==false){ return; }
@@ -536,8 +430,6 @@ Triangle.prototype.float = function(){
   rotateY( toRadian( this.ry ) % 360  );
   rotateZ( toRadian( this.rz ) % 360  );
 }
-
-
 //React to mouse position
 Triangle.prototype.react = function(){
     if(!this.canReact){return;} //Check if can react
@@ -590,7 +482,6 @@ Triangle.prototype.react = function(){
     }
 
 }
-
 // Style
 //*****************************
 // //Get random style and color
@@ -599,3 +490,82 @@ function randomStyle(){
   var color = dice(2) == 1 ? "#fff" : "#0097cf";
   return { "shape": shape , "color" : color };
 }
+
+
+
+
+//*****************************
+// helpers
+//*****************************
+function debugHelpers(){
+  if(!debug){return;}
+
+  push();
+  translate(mouse.x, mouse.y,0);
+  ambientMaterial("#ff0000");
+  sphere(mouseRadius);
+  pop();
+
+  push();
+    ambientMaterial("#ff0000");
+    sphere(5);
+  pop();
+}
+//Return a number btween 1 and sides
+function dice(sides){
+
+  return Math.floor( Math.random() * sides ) + 1;
+}
+//Return random value
+function rand(value,value2){
+  if(value2){
+    return (Math.random() * value2) + value;
+  }
+  return Math.random() * value;
+}
+function randWithNegative(value){
+
+  return (Math.random() * ((value*2)+1) ) - value;
+}
+//Calculate the distance btween two points
+function distance(x1, y1, x2, y2){
+
+  return Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
+}
+//Return the mddlepoint
+function middlePoint( x1, y1, x2, y2 ){
+
+  return { "x": (x1 +x2)/2 , "y": (y1+y2)/2 };
+}
+//Return the angle btween two points
+function getAngle(x1, y1, x2, y2){
+
+  return - Math.atan2(y1 - y2, x1 - x2);
+}
+//Deegree to radians
+function toRadian(degrees){
+
+  return degrees * Math.PI / 180;
+}
+
+
+//*****************************
+// Listeners
+//*****************************
+function PSonTouchMove(e){
+    if(e.touches.length > 0 ){
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }
+}
+function PSonMouseMove(e){
+  if(window.jQuery){
+    mouse.x = e.clientX - $("#canvasHolder").offset().left - (cnvasW/2);
+    mouse.y = e.clientY - $("#canvasHolder").offset().top - (cnvasH/2);
+  }else{
+    mouse.x = e.clientX - (cnvasW/2);
+    mouse.y = e.clientY - (cnvasH/2);
+  }
+}
+window.addEventListener("mousemove",  PSonMouseMove);
+window.addEventListener("touchmove",  PSonTouchMove);

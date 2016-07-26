@@ -63,12 +63,6 @@ Emitter.prototype.cast = function(){
     var triangle = new Triangle( this );
     this.particles.push( triangle );
   }
-
-  // if(this.delay > 0){ console.log("Done");
-  //   this.setTimeout( function(){ this.setCanRender(true);console.log("Done"); }, this.delay);
-  // }else{
-  //   this.setCanRender(true);
-  // }
 }
 //Render particles
 Emitter.prototype.render = function(){

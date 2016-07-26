@@ -127,5 +127,3 @@ function PSonMouseMove(e){
 }
 window.addEventListener("mousemove",  PSonMouseMove);
 window.addEventListener("touchmove",  PSonTouchMove);
-
-
