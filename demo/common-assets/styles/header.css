@@ -1,0 +1,45 @@
+* { padding: 0; margin: 0; border: none; box-sizing: border-box; }
+
+header#top,
+.basic-espn-bar,
+.secondary-header {
+  -webkit-transition: margin 200ms ease;
+  -moz-transition: margin 200ms ease;
+  -o-transition: margin 200ms ease;
+  transition: margin 200ms ease;
+}
+
+.basic-espn-bar {
+  background: #333;
+  height: 50px;
+  padding: 15px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.basic-espn-bar img {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+}
+
+#barrauol {
+  left: 0;
+  position: absolute !important;
+  top: 0;
+  width: 100%;
+}
+
+header#top {
+  left: 0;
+  position: absolute;
+  top: 44px;
+  width: 100%;
+}
+
+body.past-header header#top {
+  top: -50px;
+  position: fixed;
+}
+
+body.past-header.scroll-up header#top { margin-top: 50px }

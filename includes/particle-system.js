@@ -60,7 +60,7 @@ function castEmitters(){
   }
 }
 //Draw emitters and particles
-function renderEmitters(){ //This can be cast at different times
+function renderEmitters(){
   for(var i in emitters){
     emitters[i].render();
   }
@@ -110,23 +110,22 @@ function toRadian(degrees){
 //*****************************
 // Listeners
 //*****************************
-function onTouchMove(e){
+function PSonTouchMove(e){
     if(e.touches.length > 0 ){
       mouse.x = e.touches[0].clientX;
       mouse.y = e.touches[0].clientY;
     }
 }
-function onMouseMove(e){
-  mouse.x = e.clientX - (cnvasW/2);
-  mouse.y = e.clientY - (cnvasH/2);
-  // mouse.x = e.clientX - $("#canvasHolder").offset().left - (w/2);
-  // mouse.y = e.clientY - $("#canvasHolder").offset().top - (h/2);
+function PSonMouseMove(e){
+  if(window.jQuery){
+    mouse.x = e.clientX - $("#canvasHolder").offset().left - (cnvasW/2);
+    mouse.y = e.clientY - $("#canvasHolder").offset().top - (cnvasH/2);
+  }else{
+    mouse.x = e.clientX - (cnvasW/2);
+    mouse.y = e.clientY - (cnvasH/2);
+  }
 }
-function onMouseClick(e){
-  repel = repel ? false : true;
-  tempRotation = tempRotation ? false : true;
-}
-window.addEventListener("mousemove", onMouseMove);
-window.addEventListener("touchmove", onTouchMove);
-window.addEventListener("click", onMouseClick);
+window.addEventListener("mousemove",  PSonMouseMove);
+window.addEventListener("touchmove",  PSonTouchMove);
+
 
