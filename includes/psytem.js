@@ -37,11 +37,9 @@ function draw(){
 // Emitters
 function castEmitters(){
   for(var i in emittersSetup){
-    //Create new emitter. Pass
     var emitter = new Emitter( emittersSetup[i] );
     emitters.push( emitter ); //Push in to the collection
-    //Cast triangles
-    emitter.cast();
+    emitter.cast(); //Cast triangles
   }
 }
 //Draw emitters and particles
@@ -81,10 +79,12 @@ function Emitter( data ){
   this.style = data.style ? data.style : "random";
   //Particles can rotate/float
   this.rotate = data.rotate != null ? data.rotate : true;
+
   //Particles rotation velocity
-  this.vrx = data.vrx ? data.vrx : 10;
-  this.vry = data.vry ? data.vry : 10;
-  this.vrz = data.vrz ? data.vrz : 10;
+  var defaultRV = 25;
+  this.vrx = data.vrx ? data.vrx : defaultRV;
+  this.vry = data.vry ? data.vry : defaultRV;
+  this.vrz = data.vrz ? data.vrz : defaultRV;
   this.vrr = rand(70) + 50;
 
   //Size variation

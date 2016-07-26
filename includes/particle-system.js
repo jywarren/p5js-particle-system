@@ -118,8 +118,8 @@ function PSonTouchMove(e){
 }
 function PSonMouseMove(e){
   if(window.jQuery){
-    mouse.x = e.clientX - $("#canvasHolder").offset().left - (cnvasW/2);
-    mouse.y = e.clientY - $("#canvasHolder").offset().top - (cnvasH/2);
+    mouse.x = e.clientX - $("#canvasHolder canvas").offset().left - (cnvasW/2);
+    mouse.y = e.clientY - $("#canvasHolder canvas").offset().top - (cnvasH/2);
   }else{
     mouse.x = e.clientX - (cnvasW/2);
     mouse.y = e.clientY - (cnvasH/2);
