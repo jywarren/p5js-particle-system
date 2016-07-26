@@ -1,13 +1,5 @@
 
-//*****************************
-// Emitters
-//*****************************
-var emittersSetup =[
-{x:-420, y:-280, count:40, size:35, vx:30, vy:5, type:"linear", direction:-25, delay:1},
-{x:-120, y:-310, count:30, size:20,vx:16,vy:1, type:"linear"},
-// {x:220, y:-200, count:40, size:30,vx:16,vy:1, type:"linear",direction:-16},
-// {x:420, y:100, count:30, size:40,vx:16,vy:10, type:"linear",direction:-5},
-];
+
 
 
 //Hold created emitters
