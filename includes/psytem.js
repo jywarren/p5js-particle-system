@@ -15,7 +15,7 @@ var fps     = 60;//Framerate
 var aspect  = 1.6;  //Aspect ratio based on 1280/800
 var cnvasW  = 1280; //Canvas width
 var cnvasH  = cnvasW / aspect;
-function setup(){
+window.setup = function(){
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
   perspective(60 / 180 * PI, aspect, 0.1, 1000);
@@ -26,7 +26,7 @@ function setup(){
   //Create emiters
   castEmitters();
 }
-function draw(){
+window.draw = function(){
   ambientLight(255); //Max light to keep materials with original color
   //Render emitters
   renderEmitters();
