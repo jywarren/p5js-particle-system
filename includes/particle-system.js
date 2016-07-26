@@ -1,7 +1,3 @@
-
-
-
-
 //Hold created emitters
 var emitters = [];
 
@@ -36,7 +32,6 @@ function draw(){
   //Render helpers
   debugHelpers();
 }
-
 
 //*****************************
 // Emitters
@@ -97,7 +92,6 @@ function toRadian(degrees){
 
   return degrees * Math.PI / 180;
 }
-
 
 //*****************************
 // Listeners
