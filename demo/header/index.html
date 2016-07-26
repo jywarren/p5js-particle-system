@@ -89,9 +89,13 @@
 
 		<script type="text/javascript" src="swimming.js"></script>
 
+		<!-- DEMO START -->
+		<!-- P5js dependency -->
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.2/p5.js"></script>
+
 		<script src="../../includes/psytem.js"></script>
 		<script type="text/javascript">
+
 			//*****************************
 			// Emitters
 			//*****************************
@@ -102,7 +106,27 @@
 			{x:70, y:-200, count:40, size:30,vx:16,vy:3, type:"linear",direction:-16, delay:timerD},
 			{x:300, y:100, count:50, size:40,vx:18,vy:10, type:"linear",direction:-5, delay:timerD},
 			];
+
+			/*************************************************************
+           x,y: emitter position
+         count: number of particles
+          size: size variation for particles
+          type: "radial"(default) or "linear"
+         vx,vy: diretional velocity
+      friction: velocity decrease ammount
+        stroke: stroke thickness
+        rotate: true(defaul) or false : to allow particles to keep floating
+  vrx,vry,vrz : Rotation velocity - default = 10
+        color : "random"(default) or color EG:"#ff0000"
+        style : "random"(default), "fill" or "stroke"
+    direction : [only for linear] degrees
+         depht: Z variable depth
+         delay: seconds before render
+			*************************************************************/
+
 		</script>
+		<!-- DEMO END -->
+
 	</body>
 </html>
 
