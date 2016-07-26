@@ -127,7 +127,7 @@ Triangle.prototype.render = function(){
 }
 //Animate entrance
 Triangle.prototype.enter = function(){
-  if( (this.emitter.delay * fps) > frameCount ){ return; }
+  if( (this.emitter.delay * fps) > frCount ){ return; }
   if(this.canReact){ return; }
 
   this.eavx *= this.emitter.friction;

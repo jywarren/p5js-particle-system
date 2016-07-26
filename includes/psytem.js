@@ -12,6 +12,7 @@ var mouseRadius = 90; //Repelling radius
 //*****************************
 var debug   = false;
 var fps     = 60;//Framerate
+var frCount = 0; //FrameCount
 var aspect  = 1.6;  //Aspect ratio based on 1280/800
 var cnvasW  = 1280; //Canvas width
 var cnvasH  = cnvasW / aspect;
@@ -36,6 +37,9 @@ window.draw = function(){
 //*****************************
 // Emitters
 function castEmitters(){
+  //Reset framecount
+  frCount = 0;
+
   for(var i in emittersSetup){
     var emitter = new Emitter( emittersSetup[i] );
     emitters.push( emitter ); //Push in to the collection
@@ -47,6 +51,8 @@ function renderEmitters(){
   for(var i in emitters){
     emitters[i].render();
   }
+  //Increase frame count
+  frCount ++;
 }
 
 
@@ -105,8 +111,6 @@ Emitter.prototype.cast = function(){
 }
 //Render particles
 Emitter.prototype.render = function(){
-
-
   //Emitter - Create new object
   push();
     //Change emitter position
@@ -339,9 +343,8 @@ function outlineTriangle(t){
     t.float();
     //Add debugging points
     debugPoints(t);
-
+    //
     var strokeW = t.emitter.stroke;
-
     //Init sides
     push();
       ambientMaterial(t.color);
@@ -374,9 +377,6 @@ function fullTriangle(t){
     debugPoints(t);
     push();
       ambientMaterial(t.color);
-      // rotateY( toRadian( mouse.x ) );
-      // rotateX( toRadian( mouse.y ) );
-      // rotateZ( toRadian( mouse.x ) );
       triangle(t.aX, t.aY, t.bX, t.bY, t.cX, t.cY);
     pop();
   pop();
@@ -397,7 +397,7 @@ Triangle.prototype.render = function(){
 }
 //Animate entrance
 Triangle.prototype.enter = function(){
-  if( (this.emitter.delay * fps) > frameCount ){ return; }
+  if( (this.emitter.delay * fps) > frCount ){ return; }
   if(this.canReact){ return; }
 
   this.eavx *= this.emitter.friction;

@@ -11,6 +11,7 @@ var mouseRadius = 90; //Repeling radius
 // Canvas
 //*****************************
 var fps     = 60;//Framerate
+var frCount = 0; //FrameCount
 var aspect  = 1.6;  //Aspect ratio based on 1280/800
 var cnvasW  = 1280; //Canvas width
 var cnvasH  = cnvasW / aspect;
@@ -38,6 +39,9 @@ function draw(){
 //*****************************
 //Create all emitters
 function castEmitters(){
+  //Reset framecount
+  frCount = 0;
+  //Reset freameCount
   for(var i in emittersSetup){
     //Create new emitter. Pass
     var emitter = new Emitter( emittersSetup[i] );
@@ -51,6 +55,8 @@ function renderEmitters(){
   for(var i in emitters){
     emitters[i].render();
   }
+  //Increase frame count
+  frCount ++;
 }
 
 //*****************************
