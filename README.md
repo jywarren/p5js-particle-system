@@ -67,7 +67,6 @@ The list below shows all possible configurations:
 `float` `depht:` - Z variable depth
 
 ```javascript
-//Add an 10 triangle emitter to x:10px y:10px
 var emittersSetup =
 [
     {x: 10, y: 10, count: 10, type: "linear", direction: 22, delay: 2, },
