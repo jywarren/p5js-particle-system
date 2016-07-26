@@ -10,7 +10,7 @@ var mouseRadius = 90; //Repelling radius
 //*****************************
 // Canvas
 //*****************************
-var debug   = true;
+var debug   = false;
 var fps     = 60;//Framerate
 var aspect  = 1.6;  //Aspect ratio based on 1280/800
 var cnvasW  = 1280; //Canvas width
@@ -560,8 +560,8 @@ function PSonTouchMove(e){
 }
 function PSonMouseMove(e){
   if(window.jQuery){
-    mouse.x = e.clientX - $("#canvasHolder").offset().left - (cnvasW/2);
-    mouse.y = e.clientY - $("#canvasHolder").offset().top - (cnvasH/2);
+    mouse.x = e.clientX - $("#canvasHolder canvas").offset().left - (cnvasW/2);
+    mouse.y = e.clientY - $("#canvasHolder canvas").offset().top - (cnvasH/2);
   }else{
     mouse.x = e.clientX - (cnvasW/2);
     mouse.y = e.clientY - (cnvasH/2);

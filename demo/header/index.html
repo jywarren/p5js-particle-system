@@ -4,14 +4,9 @@
 		<link rel="stylesheet" href="swimming.css">
 		<link rel="stylesheet" href="../common-assets/styles/fonts.css">
 		<link rel="stylesheet" href="../common-assets/styles/header.css">
-    <style type="text/css">
-      #canvasHolder{
-      	/*border: solid 1px red;*/
-        position:absolute; top:0; left:0;
-        -webkit-filter:blur(.5px);
-        z-index: 1000;
-      }
-    </style>
+
+		<link rel="stylesheet" href="../../includes/psytem.css">
+
 	</head>
 
 	<body>
@@ -43,22 +38,12 @@
 			<div class="layer back b3 "></div>
 			<div class="layer character"></div>
 			<div class="layer ball"></div>
-			<!-- <div class="layer tri f1"></div>
-			<div class="layer tri f2"></div>
-			<div class="layer tri f8"></div>
-			<div class="layer tri f3"></div>
-			<div class="layer tri f4"></div>
-			<div class="layer tri f5"></div>
-			<div class="layer tri f6"></div>
-			<div class="layer tri f7"></div>
-			<div class="layer tri f9"></div>
-			<div class="layer tri blur"></div> -->
 			<div class="infoCont">
 				<div id="numbers">10</div>
 				<div class="infos"></div>
 				<div class="sport">Natação</div>
 			</div>
-    	<div id="canvasHolder"></div>
+    		<div id="canvasHolder"></div>
 		</div>
 	</div>
 
@@ -86,7 +71,6 @@
 		<script type="text/javascript" src="../common-assets/js/vendor/TextPlugin.min.js"></script>
 		<script type="text/javascript" src="../common-assets/js/vendor/BezierEasing.js"></script>
 		<script type="text/javascript" src="../common-assets/js/header.js"></script>
-
 		<script type="text/javascript" src="swimming.js"></script>
 
 		<!-- DEMO START -->
@@ -99,12 +83,12 @@
 			//*****************************
 			// Emitters
 			//*****************************
-			var timerD = .6;
+			var timerD = .6; //delay in seconds
 			var emittersSetup =[
-			{x:-590, y:-290, count:50, size:35,vx:34,vy:7, type:"linear",direction:-30, delay:timerD},
-			{x:-290, y:-290, count:30, size:20,vx:16,vy:1, type:"linear", delay:timerD},
-			{x:70, y:-200, count:40, size:30,vx:16,vy:3, type:"linear",direction:-16, delay:timerD},
-			{x:300, y:100, count:50, size:40,vx:18,vy:10, type:"linear",direction:-5, delay:timerD},
+			{x:-390, y:-290, count:50, size:35,vx:34,vy:7, type:"linear",direction:-30, delay:timerD},
+			{x:-90, y:-290, count:30, size:20,vx:16,vy:1, type:"linear", delay:timerD},
+			{x:270, y:-200, count:40, size:30,vx:16,vy:3, type:"linear",direction:-16, delay:timerD},
+			{x:500, y:100, count:50, size:40,vx:18,vy:10, type:"linear",direction:-5, delay:timerD},
 			];
 
 			/*************************************************************
