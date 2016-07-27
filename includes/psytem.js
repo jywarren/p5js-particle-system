@@ -341,14 +341,14 @@ Triangle.prototype.react = function(){
 
     }else{
       var fric = 0.90;
-      this.vrx *= fric;//this.emitter.friction;
-      this.vry *= fric;//this.emitter.friction;
-      this.vrz *= fric;//this.emitter.friction;
+      this.vrx *= fric;
+      this.vry *= fric;
+      this.vrz *= fric;
 
       var varratio = 100;
-      this.vrx = this.vrx <= this.vr.x ? this.vr.x : this.vrx;// - (this.emitter.vrr / varratio);
-      this.vry = this.vry <= this.vr.y ? this.vr.y : this.vry;// - (this.emitter.vrr / varratio);
-      this.vrz = this.vrz <= this.vr.z ? this.vr.z : this.vrz;// - (this.emitter.vrr / varratio);
+      this.vrx = this.vrx <= this.vr.x ? this.vr.x : this.vrx;
+      this.vry = this.vry <= this.vr.y ? this.vr.y : this.vry;
+      this.vrz = this.vrz <= this.vr.z ? this.vr.z : this.vrz;
     }
 
 }
@@ -444,10 +444,3 @@ function toRadian(degrees){
 
   return degrees * Math.PI / 180;
 }
-
-
-
-function PSonMouseClick(){
-  startEmitters();
-}
-window.addEventListener("click",  PSonMouseClick);

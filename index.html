@@ -20,7 +20,6 @@
     <!-- Particle system code -->
     <script src="includes/psytem.js"></script>
     <script type="text/javascript">
-
         //*****************************
         // Emitters
         //*****************************
@@ -31,7 +30,14 @@
             {x:270,  y:-200, count:40, size:30, vx:16, vy:3,  type:"linear", direction:-16},
             {x:500,  y: 100, count:50, size:40, vx:18, vy:10, type:"linear", direction:-5},
         ];
-        </script>
+
+        //Alloc all emitters
+        castEmitters();
+        //Free all particles
+        startEmitters(); //Will start all emitters
+        //To start a single emitter
+        // emitters[1].start();
+    </script>
 
   </body>
 </html>
