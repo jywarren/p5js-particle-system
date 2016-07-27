@@ -1,0 +1,12 @@
+#canvasHolder{
+    -webkit-filter:blur(.5px); /*Fix for antialias*/
+
+    /*position:absolute; top:0; left:50%;*/
+    z-index: 1000;
+
+    border: solid 1px red;
+}
+#canvasHolder canvas{
+    /*position:relative; top:0; left:-50%;*/
+    border: solid 1px blue;
+}
