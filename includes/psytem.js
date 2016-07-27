@@ -13,13 +13,15 @@ var mouseRadius = 90; //Repelling radius
 var debug   = false;
 var fps     = 60;//Framerate
 var frCount = 0; //FrameCount
-var aspect  = 1.6;  //Aspect ratio based on 1280/800
+var aspect  = 1;  //Aspect ratio based on 1280/800
 var cnvasW  = 1280; //Canvas width
 var cnvasH  = cnvasW / aspect;
 window.setup = function(){
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
-  perspective(60 / 180 * PI, aspect, 0.1, 1000);
+  ortho(-width/2, width/2, -height/2, height/2, .1, 1000);
+  // perspective(60 / 180 * PI, aspect, 0.1, 1000);
+
   //
   pixelDensity(1.5);
   //Frames per second
