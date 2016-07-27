@@ -2,6 +2,7 @@
 var emitters = [];
 //Mouse interaction
 var mouseRadius = 90; //Repelling radius
+var friction = Math.random() * 0.05 + 0.90;
 //System variables
 var debug   = true;//Will show the emitters position, canvas center and mouse position
 var fps     = 60;   //Framerate
@@ -70,7 +71,7 @@ function Emitter( data ){
   this.vx = data.vx ? data.vx : 5;
   this.vy = data.vy ? data.vy : 5;
   //Friction
-  this.friction = Math.random() * 0.05 + data.friction ? data.friction : 0.90;
+  // this.friction = Math.random() * 0.05 + data.friction ? data.friction : 0.90;
   //Particle colors
   this.color = data.color ? data.color : "random";
   //Particles styles
@@ -269,8 +270,8 @@ Triangle.prototype.enter = function(){
   //
   if(this.canReact){ return; }
 
-  this.eavx *= this.emitter.friction;
-  this.eavy *= this.emitter.friction;
+  this.eavx *= friction;//this.emitter.friction;
+  this.eavy *= friction;//this.emitter.friction;
   this.pX += this.eavx;
   this.pY += this.eavy;
 
@@ -302,8 +303,8 @@ Triangle.prototype.react = function(){
     this.vx += this.accX;
     this.vy += this.accY;
     //Add friction to "stop moving"
-    this.vx *= this.emitter.friction;
-    this.vy *= this.emitter.friction;
+    this.vx *= friction;//this.emitter.friction;
+    this.vy *= friction;//this.emitter.friction;
     //Change position
     this.pX += this.vx;
     this.pY += this.vy;
