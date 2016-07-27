@@ -307,9 +307,13 @@ Triangle.prototype.react = function(){
     var mX = currentMouseX() - this.emitter.pX;
     var mY = currentMouseY() - this.emitter.pY;
 
-    //Check position related to mouse
-    var a = this.pX - mX;
-    var b = this.pY - mY;
+    //Calculate the triangle point according to emitter rotation
+    var rotatedX = this.pX * Math.cos( toRadian( 360 - this.emitter.direction  ) );
+    var rotatedY = this.pX * Math.sin( toRadian( 360 - this.emitter.direction  ) );
+
+    //Get the distance between
+    var a = rotatedX - mX;
+    var b = rotatedY - mY;
     var distance = Math.sqrt( a*a + b*b );
     if( distance < (mouseRadius) ){
 
