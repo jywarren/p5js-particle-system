@@ -11,11 +11,19 @@ var cnvasW  = 1400; //Canvas width
 var cnvasH  = cnvasW / aspect;
 //
 var canDraw = false;
+var canvasReady = false;
 //
 window.setup = function(){
   console.log("-> P5 Setup");
+
+  canvasSetup();
+
+  // if(!canvasReady){
+
+  // }
 }
 window.canvasSetup = function(){
+  // if(!canvasReady){ return; }
   console.log("-> Canvas Setup");
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
