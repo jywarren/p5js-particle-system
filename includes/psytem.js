@@ -27,7 +27,7 @@ window.draw = function(){
 }
 //*****************************
 // Emitters
-function castEmitters(){
+window.castEmitters = function(){
   //Create emitters
   for(var i in emittersSetup){
     var emitter = new Emitter( emittersSetup[i] );
@@ -36,7 +36,7 @@ function castEmitters(){
   }
 }
 //Start all emitters
-function startEmitters(){
+window.startEmitters = function(){
   for(var i in emitters){
     emitters[i].start();
   }
