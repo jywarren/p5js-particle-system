@@ -5,6 +5,7 @@ var mouseRadius = 90; //Repelling radius
 //System variables
 var debug   = true;//Will show the emitters position, canvas center and mouse position
 var fps     = 60;   //Framerate
+var far     = 500;  //Camera distance
 var aspect  = 1;    //Aspect ratio for height calculation
 var cnvasW  = 1400; //Canvas width
 var cnvasH  = cnvasW / aspect;
@@ -12,7 +13,7 @@ window.setup = function(){
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
   var vpoint = 1.43;
-  ortho(-width/vpoint, width/vpoint, -height/vpoint, height/vpoint, 0.1, 100);
+  ortho(-width/vpoint, width/vpoint, -height/vpoint, height/vpoint, 0.1, far);
   //
   pixelDensity(1.5);//Improve render quality
   frameRate(fps);   //Change the FPS
@@ -84,8 +85,6 @@ function Emitter( data ){
   this.vrr = rand(70) + 50;
   //Size variation
   this.variation = data.size ? data.size : 50.;
-  //Z Depth variation
-  this.depht = data.depth ? data.depth : 35;
   //Particle count
   this.count = data.count ? data.count : 10;
   //Particles container
@@ -190,9 +189,9 @@ function Triangle( emitter ){
   this.rx = this.ry = this.rz = 0;
 
   //Initial position - dynamic
-  this.pX =
+  this.pX = 10;
   this.pY = 0;
-  this.pZ = rand(this.emitter.depht);
+  this.pZ = rand(far);
 
   //Hold position - triangle will keep trying to go back to this position
   this.dest = { x : this.pX, y: this.pY };
@@ -442,10 +441,9 @@ function toRadian(degrees){
   return degrees * Math.PI / 180;
 }
 
-// function PSonMouseClick(){
 
-//   // emitters[1].start();
-//   // startEmitters();
-// }
 
-// window.addEventListener("click",  PSonMouseClick);
+function PSonMouseClick(){
+  startEmitters();
+}
+window.addEventListener("click",  PSonMouseClick);
