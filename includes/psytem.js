@@ -12,7 +12,7 @@ var cnvasH  = cnvasW / aspect;
 window.setup = function(){
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
-  var vpoint = 1.43;//cnvasW / 1000;
+  var vpoint = 1.43;
   ortho(-width/vpoint, width/vpoint, -height/vpoint, height/vpoint, 0.1, 100);
   //
   pixelDensity(1.5);//Improve render quality
@@ -123,13 +123,10 @@ Emitter.prototype.render = function(){
           trangle.render(); //Render triangle
         pop();
       }
-
     pop();//Close particle container
-
   //Emitter - Close object
   pop();
 }
-
 
 // Triangle
 //*****************************
@@ -139,10 +136,9 @@ function Triangle( emitter ){
   //Se color and shape type
   this.shape = this.emitter.style == "random" ? randomStyle().shape : this.emitter.style;
   this.color = this.emitter.color == "random" ? randomStyle().color : this.emitter.color;
+  this.bkColor = this.color;
   //Prevent mouse interaction
   this.canReact = false;
-  //Prevent from rendering
-  this.canRender = false;
 
   //Points
   var ratio = emitter.variation;
@@ -258,7 +254,16 @@ Triangle.prototype.render = function(){
 }
 //Animate entrance
 Triangle.prototype.enter = function(){
-  if( (this.emitter.delay * fps) > frCount ){ return; }
+  //Prevent entrance before delay
+  if( (this.emitter.delay * fps) > frCount ){
+    //Set color with no opacity to hide the triangle
+    this.setColor("rgba(0,0,0,0)");
+    return;
+  }
+  //Set new color
+  this.setColor(this.bkColor);
+
+  //
   if(this.canReact){ return; }
 
   this.eavx *= this.emitter.friction;
@@ -339,6 +344,10 @@ Triangle.prototype.react = function(){
       this.vrz = this.vrz <= this.vr.z ? this.vr.z : this.vrz;// - (this.emitter.vrr / varratio);
     }
 
+}
+//Change triangle color
+Triangle.prototype.setColor = function(color){
+  this.color = color;
 }
 // Style
 //*****************************
