@@ -1,38 +1,28 @@
-//*****************************
-// Emitters
-//*****************************
+//Hold created emitters
 var emitters = [];
-//*****************************
-// Mouse
-//*****************************
-var mouse = {x:0,y:0}
+//Mouse interaction
 var mouseRadius = 90; //Repelling radius
-//*****************************
-// Canvas
-//*****************************
-var debug   = false;
-var fps     = 60;//Framerate
-var frCount = 0; //FrameCount
-var aspect  = 1;  //Aspect ratio based on 1280/800
-var cnvasW  = 1280; //Canvas width
+//System variables
+var debug   = true;//Will show the emitters position, canvas center and mouse position
+var fps     = 60;   //Framerate
+var frCount = 0;    //FrameCount - Used for delay
+var aspect  = 1;    //Aspect ratio for height calculation
+var cnvasW  = 1400; //Canvas width
 var cnvasH  = cnvasW / aspect;
 window.setup = function(){
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
-  ortho(-width/2, width/2, -height/2, height/2, .1, 1000);
-  // perspective(60 / 180 * PI, aspect, 0.1, 1000);
-
+  var vpoint = 1.43;//cnvasW / 1000;
+  ortho(-width/vpoint, width/vpoint, -height/vpoint, height/vpoint, 0.1, 100);
   //
-  pixelDensity(1.5);
-  //Frames per second
-  frameRate(fps);
-  //Create emiters
-  castEmitters();
+  pixelDensity(1.5);//Improve render quality
+  frameRate(fps);   //Change the FPS
+
+  castEmitters();//Create particle emiters
 }
 window.draw = function(){
   ambientLight(255); //Max light to keep materials with original color
-  //Render emitters
-  renderEmitters();
+  renderEmitters();  //Render emitters
   //Render helpers
   debugHelpers();
 }
@@ -41,7 +31,7 @@ window.draw = function(){
 function castEmitters(){
   //Reset framecount
   frCount = 0;
-
+  //Create emitters
   for(var i in emittersSetup){
     var emitter = new Emitter( emittersSetup[i] );
     emitters.push( emitter ); //Push in to the collection
@@ -141,13 +131,6 @@ Emitter.prototype.render = function(){
 }
 
 
-
-
-/*    C = cX,cY
-     /\
-  cW/  \bW
-  A/____\B = bX,bY
-     aW*/
 // Triangle
 //*****************************
 function Triangle( emitter ){
@@ -321,8 +304,8 @@ Triangle.prototype.react = function(){
 
     //MOUSE REPELENT
     //Compensate emitter position to be affected in the word
-    var mX = mouse.x - this.emitter.pX;
-    var mY = mouse.y - this.emitter.pY;
+    var mX = currentMouseX() - this.emitter.pX;
+    var mY = currentMouseY() - this.emitter.pY;
 
     //Check position related to mouse
     var a = this.pX - mX;
@@ -368,13 +351,37 @@ function randomStyle(){
 //*****************************
 // helpers
 //*****************************
+function currentMouseX(){
+  return mouseX - width/2;
+}
+function currentMouseY(){
+  return mouseY - height/2;
+}
+
+
 function debugHelpers(){
   if(!debug){return;}
 
   push();
-  translate(mouse.x, mouse.y,0);
+  translate(currentMouseX(), currentMouseY(),0);
+
+  // var wS = width/2;
+  // var hS = height/2;
+  // // var xteste = 0.08;
+
+  // var tmX = (mouseX - wS);// - (mouseX * xteste);
+  // var tmY = (mouseY - hS);
+
+  // translate(tmX, tmY, 0);
+
+
+  // console.log(width, height, tmX, tmY,mouseX * xteste, xteste);
+
+
   ambientMaterial("#ff0000");
-  sphere(mouseRadius);
+  plane(mouseRadius);
+  ambientMaterial("#00ff00");
+  plane(4);
   pop();
 
   push();
@@ -384,7 +391,6 @@ function debugHelpers(){
 }
 //Return a number btween 1 and sides
 function dice(sides){
-
   return Math.floor( Math.random() * sides ) + 1;
 }
 //Return random value
@@ -420,23 +426,3 @@ function toRadian(degrees){
 }
 
 
-//*****************************
-// Listeners
-//*****************************
-function PSonTouchMove(e){
-    if(e.touches.length > 0 ){
-      mouse.x = e.touches[0].clientX;
-      mouse.y = e.touches[0].clientY;
-    }
-}
-function PSonMouseMove(e){
-  if(window.jQuery){
-    mouse.x = e.clientX - $("#canvasHolder canvas").offset().left - (cnvasW/2);
-    mouse.y = e.clientY - $("#canvasHolder canvas").offset().top - (cnvasH/2);
-  }else{
-    mouse.x = e.clientX - (cnvasW/2);
-    mouse.y = e.clientY - (cnvasH/2);
-  }
-}
-window.addEventListener("mousemove",  PSonMouseMove);
-window.addEventListener("touchmove",  PSonTouchMove);
