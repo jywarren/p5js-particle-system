@@ -34,12 +34,17 @@ var emittersSetup =
     {x: 10, y: 10, count: 10},
 ];
 ```
+
 **2** - Once all code is loaded, call the `canvasSetup()` function to create the canvas.
+
 **3** - Call `castEmitters()` to insert all emitters to your canvas.
+
 **4** - Call `startEmitters()` to start all emitters or `emitters[n].start();` to start a single emitter;
 
 `stopEmitters()` will stop rendering;
+
 `restartEmitters()` will restart rendering;
+
 
 
 ###Options
