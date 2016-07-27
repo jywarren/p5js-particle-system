@@ -50,6 +50,10 @@ window.startEmitters = function(){
     emitters[i].start();
   }
 }
+//Restart emitters
+window.restartEmitters = function(){
+  canDraw = true;
+}
 //Stop draw
 window.stopEmitters = function(){
   canDraw = false;
