@@ -5,7 +5,6 @@ var mouseRadius = 90; //Repelling radius
 //System variables
 var debug   = true;//Will show the emitters position, canvas center and mouse position
 var fps     = 60;   //Framerate
-var frCount = 0;    //FrameCount - Used for delay
 var aspect  = 1;    //Aspect ratio for height calculation
 var cnvasW  = 1400; //Canvas width
 var cnvasH  = cnvasW / aspect;
@@ -29,8 +28,6 @@ window.draw = function(){
 //*****************************
 // Emitters
 function castEmitters(){
-  //Reset framecount
-  frCount = 0;
   //Create emitters
   for(var i in emittersSetup){
     var emitter = new Emitter( emittersSetup[i] );
@@ -38,13 +35,17 @@ function castEmitters(){
     emitter.cast(); //Cast triangles
   }
 }
+//Start all emitters
+function startEmitters(){
+  for(var i in emitters){
+    emitters[i].start();
+  }
+}
 //Draw emitters and particles
 function renderEmitters(){
   for(var i in emitters){
     emitters[i].render();
   }
-  //Increase frame count
-  frCount ++;
 }
 
 
@@ -52,6 +53,8 @@ function renderEmitters(){
 // Emitter CLASS
 //*****************************
 function Emitter( data ){
+  //Emitter hold particles entrance
+  this.didStart = false;
   // Emitter type
   this.type = data.type ? data.type : "radial"; //type: linear or radial(default)
   // Emitter position
@@ -79,8 +82,6 @@ function Emitter( data ){
   this.vry = data.vry ? data.vry : defaultRV;
   this.vrz = data.vrz ? data.vrz : defaultRV;
   this.vrr = rand(70) + 50;
-  //Delay before enter
-  this.delay = data.delay ? data.delay : 0;
   //Size variation
   this.variation = data.size ? data.size : 50.;
   //Z Depth variation
@@ -126,6 +127,10 @@ Emitter.prototype.render = function(){
     pop();//Close particle container
   //Emitter - Close object
   pop();
+}
+//
+Emitter.prototype.start = function(){
+  this.didStart = true;
 }
 
 // Triangle
@@ -254,9 +259,8 @@ Triangle.prototype.render = function(){
 }
 //Animate entrance
 Triangle.prototype.enter = function(){
-  //Prevent entrance before delay
-  if( (this.emitter.delay * fps) > frCount ){
-    //Set color with no opacity to hide the triangle
+  //Prevent entrance before start call
+  if( !this.emitter.didStart ){
     this.setColor("rgba(0,0,0,0)");
     return;
   }
@@ -438,4 +442,10 @@ function toRadian(degrees){
   return degrees * Math.PI / 180;
 }
 
+// function PSonMouseClick(){
 
+//   // emitters[1].start();
+//   // startEmitters();
+// }
+
+// window.addEventListener("click",  PSonMouseClick);
