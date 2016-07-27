@@ -1,10 +1,10 @@
-//Hold created emitters
-var emitters = [];
+var debug   = false;//Will show the emitters position, canvas center and mouse position
+
 //Mouse interaction
 var mouseRadius = 90; //Repelling radius
 var friction = Math.random() * 0.05 + 0.90;
 //System variables
-var debug   = true;//Will show the emitters position, canvas center and mouse position
+var emitters = [];  //Hold created emitters
 var fps     = 60;   //Framerate
 var far     = 500;  //Camera distance
 var aspect  = 1;    //Aspect ratio for height calculation
@@ -50,19 +50,17 @@ function renderEmitters(){
   }
 }
 
-
 //*****************************
 // Emitter CLASS
 //*****************************
 function Emitter( data ){
   //Emitter hold particles entrance
-  this.didStart = false;
+  this.didStart     = false;
   // Emitter type
   this.type = data.type ? data.type : "radial"; //type: linear or radial(default)
   // Emitter position
   this.pX = data.x ? data.x : 0;
   this.pY = data.y ? data.y : 0;
-  this.pZ = data.z ? data.z : 0;
   //Emitter direction
   this.direction = data.direction ? data.direction : 0;
   //Stroke size
@@ -70,32 +68,33 @@ function Emitter( data ){
   //Velocity x and y
   this.vx = data.vx ? data.vx : 5;
   this.vy = data.vy ? data.vy : 5;
-  //Friction
-  // this.friction = Math.random() * 0.05 + data.friction ? data.friction : 0.90;
   //Particle colors
   this.color = data.color ? data.color : "random";
   //Particles styles
   this.style = data.style ? data.style : "random";
-  //Particles can rotate/float
-  // this.rotate = data.rotate != null ? data.rotate : true;
   //Particles rotation velocity
   var defaultRV = 25;
   this.vrx = data.vrx ? data.vrx : defaultRV;
   this.vry = data.vry ? data.vry : defaultRV;
   this.vrz = data.vrz ? data.vrz : defaultRV;
-  this.vrr = rand(70) + 50;
+  this.vrr = rand(50) + 50;
   //Size variation
   this.variation = data.size ? data.size : 50.;
   //Particle count
   this.count = data.count ? data.count : 10;
   //Particles container
   this.particles = [];
+  this.waitingParticles = 0; //particles waiting to enter
+
+  //debug
+  this.debugcolor = debug == true ? "#00ff00" : "rgba(0,0,0,0)";
 }
 //Cast and hold all particles
 Emitter.prototype.cast = function(){
   for(var i = 0; i < this.count; i++){
     var triangle = new Triangle( this );
     this.particles.push( triangle );
+    this.waitingParticles++;
   }
 }
 //Render particles
@@ -103,27 +102,35 @@ Emitter.prototype.render = function(){
   //Emitter - Create new object
   push();
     //Change emitter position
-    translate(this.pX,this.pY,this.pZ);
+    translate(this.pX,this.pY,0);
     //Change emitter direction
     rotateZ( toRadian( this.direction ) );
 
     push();//Open particle container
 
-      if(debug){ //If debugable, show emitter plane
-        ambientMaterial("#00ff00");
-        plane(30);
+      //Debug marker
+      ambientMaterial(this.debugcolor);
+      plane(30);
+
+      //
+      if( this.waitingParticles > 0 ){
+        for(var i in this.particles){//Render and enter casted particles
+          var trangle = this.particles[i];//Get current triangle
+          trangle.enter(); //Call entry function
+          push();
+            trangle.render(); //Render triangle
+          pop();
+        }
+      }else{
+        for(var i in this.particles){//Render and react casted particles
+          var trangle = this.particles[i];//Get current triangle
+          trangle.react(); //Call mouse reaction
+          push();
+            trangle.render(); //Render triangle
+          pop();
+        }
       }
 
-      //Render casted particles
-      for(var i in this.particles){
-        //Get current triangle
-        var trangle = this.particles[i];
-        trangle.react(); //Call mouse reaction
-        trangle.enter(); //Call entry function
-        push();
-          trangle.render(); //Render triangle
-        pop();
-      }
     pop();//Close particle container
   //Emitter - Close object
   pop();
@@ -261,12 +268,11 @@ Triangle.prototype.render = function(){
 Triangle.prototype.enter = function(){
   //Prevent entrance before start call
   if( !this.emitter.didStart ){
-    this.setColor("rgba(0,0,0,0)");
+    this.setColor("rgba(0,0,0,0)"); //Change triangle color
     return;
   }
-  //Set new color
+  //Set correct color
   this.setColor(this.bkColor);
-
   //
   if(this.canReact){ return; }
 
@@ -278,11 +284,11 @@ Triangle.prototype.enter = function(){
   if(this.eavx < .3 && this.eavy < .3){
     this.dest = { x : this.pX, y: this.pY };
     this.canReact = true;
+    this.emitter.waitingParticles --;
   }
 }
 //Float around it's center
 Triangle.prototype.float = function(){
-  // if(this.emitter.rotate==false){ return; }
   var ratio = 10;
   this.rx += (this.vrx/ratio);
   this.ry += (this.vry/ratio);
@@ -294,8 +300,6 @@ Triangle.prototype.float = function(){
 }
 //React to mouse position
 Triangle.prototype.react = function(){
-    if(!this.canReact){return;} //Check if can react
-
     //Get acceleration
     this.accX = (this.dest.x - this.pX) / 100;
     this.accY = (this.dest.y - this.pY) / 100;
