@@ -13,9 +13,9 @@ Add the following to the file scripts section:
 
 
 
-Copy the `psystem.js` file to you project folder.
+Copy the `psystem.js` file, located inside the `includes` folder, to you project.
 
-```<script src="psystem.js"></script>```
+```<script src="./includes/psystem.js"></script>```
 
 
 
