@@ -76,7 +76,7 @@ function Emitter( data ){
   //Particles styles
   this.style = data.style ? data.style : "random";
   //Particles can rotate/float
-  this.rotate = data.rotate != null ? data.rotate : true;
+  // this.rotate = data.rotate != null ? data.rotate : true;
   //Particles rotation velocity
   var defaultRV = 25;
   this.vrx = data.vrx ? data.vrx : defaultRV;
@@ -281,8 +281,7 @@ Triangle.prototype.enter = function(){
 }
 //Float around it's center
 Triangle.prototype.float = function(){
-  if(this.emitter.rotate==false){ return; }
-
+  // if(this.emitter.rotate==false){ return; }
   var ratio = 10;
   this.rx += (this.vrx/ratio);
   this.ry += (this.vry/ratio);
