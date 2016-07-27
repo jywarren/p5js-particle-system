@@ -18,8 +18,6 @@ window.setup = function(){
   //
   pixelDensity(1.5);//Improve render quality
   frameRate(fps);   //Change the FPS
-
-  castEmitters();//Create particle emiters
 }
 window.draw = function(){
   ambientLight(255); //Max light to keep materials with original color
