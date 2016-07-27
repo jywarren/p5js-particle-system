@@ -1,5 +1,4 @@
 var debug   = false;//Will show the emitters position, canvas center and mouse position
-
 //Mouse interaction
 var mouseRadius = 90; //Repelling radius
 var friction = Math.random() * 0.05 + 0.90;
@@ -10,7 +9,14 @@ var far     = 500;  //Camera distance
 var aspect  = 1;    //Aspect ratio for height calculation
 var cnvasW  = 1400; //Canvas width
 var cnvasH  = cnvasW / aspect;
+//
+var canDraw = false;
+//
 window.setup = function(){
+  console.log("-> P5 Setup");
+}
+window.canvasSetup = function(){
+  console.log("-> Canvas Setup");
   //Current aspect ratio
   var stage = createCanvas(cnvasW, cnvasH, WEBGL).parent("canvasHolder");
   var vpoint = 1.43;
@@ -18,8 +24,11 @@ window.setup = function(){
   //
   pixelDensity(1.5);//Improve render quality
   frameRate(fps);   //Change the FPS
+  //
+  canDraw = true;
 }
 window.draw = function(){
+  if(!canDraw){ return; }
   ambientLight(255); //Max light to keep materials with original color
   renderEmitters();  //Render emitters
   //Render helpers
@@ -40,6 +49,10 @@ window.startEmitters = function(){
   for(var i in emitters){
     emitters[i].start();
   }
+}
+//Stop draw
+window.stopEmitters = function(){
+  canDraw = false;
 }
 //Draw emitters and particles
 function renderEmitters(){
