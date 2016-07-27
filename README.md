@@ -26,7 +26,7 @@ Add an array variable called `emittersSetup` to the file script section:
 
 
 ##Usage
-Add a dictionary to `emittersSetup` for each emitter needed.
+**1** - Add a dictionary to `emittersSetup` for each emitter needed.
 ```javascript
 //Add an 10 triangle emitter to x:10px y:10px
 var emittersSetup =
@@ -34,6 +34,13 @@ var emittersSetup =
     {x: 10, y: 10, count: 10},
 ];
 ```
+**2** - Once all code is loaded, call the `canvasSetup()` function to create the canvas.
+**3** - Call `castEmitters()` to insert all emitters to your canvas.
+**4** - Call `startEmitters()` to start all emitters or `emitters[n].start();` to start a single emitter;
+
+`stopEmitters()` will stop rendering;
+`restartEmitters()` will restart rendering;
+
 
 ###Options
 The list below shows all possible configurations:
@@ -46,32 +53,14 @@ The list below shows all possible configurations:
 
 `string` `type:` - "radial"_(default)_ or "linear"
 
-`float` `delay:` - Seconds before enter
-
 `float` `direction:` - Direction (in degrees) of the particles entrance
 
 `float` `vx:` and `vy:` - Diretional velocity range
 
 `float` `vrx:`, `vry:` and `vrz:` - Rotation velocity
 
-`float` `friction:` - Velocity decrease ammount
-
 `float` `stroke:` - Stroke thickness
-
-`bool` `rotate:` **true** _(defaul)_ or **false** - Allow particles to keep floating
 
 `string` `color:` - **random** _(default)_ or color EG:**#ff0000** - Particle color
 
 `string` `style:` - **random** _(default)_, **fill** or **stroke** - Particle fill mode
-
-`float` `depht:` - Z variable depth
-
-```javascript
-var emittersSetup =
-[
-    {x: 10, y: 10, count: 10, type: "linear", direction: 22, delay: 2, },
-];
-```
-
-
-
