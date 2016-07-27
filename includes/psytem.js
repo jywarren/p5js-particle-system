@@ -57,11 +57,7 @@ function renderEmitters(){
 
 
 //*****************************
-
-
-// Emitters
-
-
+// Emitter CLASS
 //*****************************
 function Emitter( data ){
   // Emitter type
@@ -142,67 +138,6 @@ Emitter.prototype.render = function(){
   pop();
 }
 
-//***************************************************
-//Public setup functions
-//***************************************************
-Emitter.prototype.setType = function(type){
-
-  if(!type){return;}
-  this.type = type;
-}
-Emitter.prototype.setPosition = function(x,y,z){
-
-   this.pX = x; this.pY = y; this.pZ = z;
-}
-Emitter.prototype.setDirection = function(degrees){
-
-  if(!degrees){return;}
-  this.direction = degrees;
-}
-Emitter.prototype.setStroke = function(stroke){
-  if(!stroke){return;}
-  this.stroke = stroke;
-}
-Emitter.prototype.setVelocity = function(vx,vy){
-  if(vx){ this.vx = vx; }
-  if(vy){ this.vy = vy; }
-}
-Emitter.prototype.setFriction = function(friction){
-  if(!friction){return;}
-  this.friction = Math.random() * 0.05 + friction;
-}
-Emitter.prototype.setSize = function(size){
-  if(!size){return;}
-  this.variation = size;
-}
-Emitter.prototype.setDepht = function(depht){
-  if(!depht){return;}
-  this.depht = depht;
-}
-Emitter.prototype.setColor = function(color){
-  if(!color){return;}
-  this.color = color;
-}
-Emitter.prototype.setStyle = function(style){
-  if(!style){return;}
-  this.style = style;
-}
-Emitter.prototype.setRotate = function(rotate){
-  if(!rotate){return;}
-  this.rotate = rotate;
-}
-Emitter.prototype.setRotation = function(vx,vy,vz){
-  if(vx){this.vrx = vx;}
-  if(vy){this.vrx = vy;}
-  if(vz){this.vrx = vz;}
-}
-Emitter.prototype.setDelay = function(delay){
-  if(delay == null){return;}
-  this.delay = delay;
-}
-
-
-
 
 
 
@@ -281,68 +216,10 @@ function Triangle( emitter ){
 }
 
 //Triangle
-function debugPoints(t){return;
-  if(!debug){return;}
-  var rdius = 5;
-  var mA  = middlePoint(t.aX,t.aY,t.bX,t.bY);
-  var mB  = middlePoint(t.bX,t.bY,t.cX,t.cY);
-  var mC  = middlePoint(t.aX,t.aY,t.cX,t.cY);
-  // if(debug){
-    //Init centers
-    push();
-      ambientMaterial("#ccc");
-      push();
-        translate(mA.x,mA.y, 0);
-        sphere(rdius/2);
-      pop();
-      push();
-        translate(mB.x,mB.y, 0);
-        sphere(rdius/2);
-      pop();
-      push();
-        translate(mC.x,mC.y, 0);
-        sphere(rdius/2);
-      pop();
-    pop();
-
-    push();
-      ambientMaterial("#0000ff");
-      sphere(rdius/2);
-    pop();
-    //Finish centers
-    //Init points
-    push();
-      push();
-        ambientMaterial("#ff0000");
-        translate(t.aX,t.aY, 0);
-        sphere(rdius);
-      pop();
-      push();
-        ambientMaterial("#00ff00");
-        translate(t.bX,t.bY, 0);
-        sphere(rdius);
-      pop();
-      push();
-        ambientMaterial("#0000ff");
-        translate(t.cX,t.cY, 0);
-        sphere(rdius);
-      pop();
-    pop();
-
-    push();
-      var center = {x:(t.aX + t.bX + t.cX)/3, y:(t.aY + t.bY + t.cY)/3 };
-      translate(center.x,center.y, 0);
-      sphere(rdius*2);
-    pop();
-    //Finish points
-  // }
-}
 //** Outline triangle
 function outlineTriangle(t){
   push();
     t.float();
-    //Add debugging points
-    debugPoints(t);
     //
     var strokeW = t.emitter.stroke;
     //Init sides
@@ -374,7 +251,6 @@ function outlineTriangle(t){
 function fullTriangle(t){
   push();
     t.float();
-    debugPoints(t);
     push();
       ambientMaterial(t.color);
       triangle(t.aX, t.aY, t.bX, t.bY, t.cX, t.cY);
