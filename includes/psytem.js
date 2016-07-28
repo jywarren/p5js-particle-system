@@ -4,11 +4,11 @@ var mouseRadius = 90; //Repelling radius
 var friction = Math.random() * 0.05 + 0.90;
 //System variables
 var emitters = [];  //Hold created emitters
-var fps     = 60;   //Framerate
-var far     = 500;  //Camera distance
-var aspect  = 1;    //Aspect ratio for height calculation
-var cnvasW  = 1400; //Canvas width
-var cnvasH  = cnvasW / aspect;
+var fps      = 60;   //Framerate
+var far      = 500;  //Camera distance
+var aspect   = 1;    //Aspect ratio for height calculation
+var cnvasW   = 1400; //Canvas width
+var cnvasH   = cnvasW / aspect;
 //
 var canDraw = false;
 var canvasReady = false;
